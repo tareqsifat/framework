@@ -89,6 +89,12 @@ class EventsDispatcherTest extends TestCase
             $d->defer(function () use ($d) {
                 $d->dispatch('foo', ['inner']);
                 $this->assertSame([], $_SERVER['__event.test']);
+
+                $d->defer(function () use ($d) {
+                    $d->dispatch('foo', ['inner2']);
+                });
+
+                $this->assertSame(['inner2'], $_SERVER['__event.test']);
             });
 
             $this->assertSame(['inner'], $_SERVER['__event.test']);
